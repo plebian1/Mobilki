@@ -1,24 +1,108 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import './App.css';
-
+import AppointmentDetailsPage from "./Pages/AppointmentDetailsPage";
+import AppointmentPage from "./Pages/AppointmentPage";
+import HomePage from "./Pages/HomePage";
+import LoginPage from "./Pages/LoginPage";
+import RegisterPage from "./Pages/RegisterPage";
+import ResultsDetailsPage from "./Pages/ResultsDetailsPage";
+import ResultsPage from "./Pages/ResultsPage";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div class="App">
+        
+        <Switch>
+          <Route 
+            exact path='/'
+            render={(props) =>
+              sessionStorage.getItem("isAuthenticated") ? (
+                <Redirect to="/home" />
+              ) : (
+                <Redirect to="/login" />
+              )
+            } 
+          />
+
+          <Route 
+          path="/login"
+            render={(props) =>
+              sessionStorage.getItem("isAuthenticated") ? (
+                <Redirect to="/home" />
+              ) : (
+                <LoginPage {...props} />
+              )
+            }
+          />
+
+          <Route 
+            path="/register"
+            render={(props) =>
+              sessionStorage.getItem("isAuthenticated") ? (
+                <Redirect to="/home" />
+              ) : (
+                <RegisterPage {...props} />
+              )
+            }
+          />
+
+          <Route 
+            path="/appointment/details"
+            render={(props) =>
+              sessionStorage.getItem("isAuthenticated") ? (
+                <AppointmentDetailsPage {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+
+          <Route 
+            path="/appointment"
+            render={(props) =>
+              sessionStorage.getItem("isAuthenticated") ? (
+                <AppointmentPage {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route 
+            path="/results/details"
+            render={(props) =>
+              sessionStorage.getItem("isAuthenticated") ? (
+                <ResultsDetailsPage {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+
+          <Route 
+            path="/results"
+            render={(props) =>
+              sessionStorage.getItem("isAuthenticated") ? (
+                <ResultsPage {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+
+          <Route 
+            path="/home"
+            render={(props) =>
+              sessionStorage.getItem("isAuthenticated") ? (
+                <HomePage {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
