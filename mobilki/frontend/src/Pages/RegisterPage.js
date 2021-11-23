@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router";
+import NavbarNotLogged from "./NavbarNotLogged";
 
 const RegisterPage = () =>  {
     const history = useHistory();
@@ -9,6 +10,8 @@ const RegisterPage = () =>  {
         history.push("/");
     }
     return (
+        <div>
+        <NavbarNotLogged></NavbarNotLogged>
     <div class="center">
         <h2>Zarejestruj się</h2>
         <form onSubmit={register}>
@@ -30,6 +33,10 @@ const RegisterPage = () =>  {
 
         <button type="submit" class="btn btn-primary">Zarejestruj się</button>
         </form>
+        <hr class="wd-350"></hr>
+        <p class="font-13">Masz już konto?</p>
+        <a class="btn btn-primary" href="/login">Zaloguj się</a>
+    </div>
     </div>
     );
 }
