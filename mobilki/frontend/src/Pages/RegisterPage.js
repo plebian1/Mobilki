@@ -1,41 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
+import useFetch from "use-http";
 import NavbarNotLogged from "./NavbarNotLogged";
 
 const RegisterPage = () =>  {
     const history = useHistory();
-    
-    const register = (event) => {
-       event. preventDefault();
-       var data = {
-       name:"SGSTR",
-       password:"gae8rhgui",
-       pesel:"2734892374",
+    const [peselInput, setPeselInput] = useState("");
+    const [passwordInput, setPasswordInput] = useState("");
+    const [nameInput, setNameInput] = useState("");
 
-
-       };
-        fetch('/api/logins/register',
+    const { post, response } = useFetch(
+        '/api/logins/register',
         {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  }
+          cachePolicy: 'no-cache',
+        }
+      );
 
-        ).then(res => res.json()).then(data => {
-    });
+    const register = async (event) =>  {
+        event.preventDefault();
 
-      //  sessionStorage.setItem("isAuthenticated", true);
-      // history.push("/");
-
-
-    }
+        await post("", {
+            name: nameInput,
+            password: passwordInput,
+            pesel: peselInput,
+          }).then((res) => {
+            if (response.ok) {
+                sessionStorage.setItem("userId", res.result.userId);
+                sessionStorage.setItem("isAuthenticated", true);
+                history.push("/");
+            }});
+    };
+    
     return (
         <div>
         <NavbarNotLogged></NavbarNotLogged>
@@ -45,17 +40,17 @@ const RegisterPage = () =>  {
 
         <div class="form-group">
             <label for="nameInput">Imię i nazwisko</label>
-            <input type="text" class="form-control" id="nameInput" placeholder="Imię i nazwisko"/>
+            <input type="text" class="form-control" id="nameInput" placeholder="Imię i nazwisko" value={nameInput} onChange={(event) => setNameInput(event.target.value)}/>
         </div>
 
         <div class="form-group">
-            <label for="emailInput">Adres email</label>
-            <input type="email" class="form-control" id="emailInput" placeholder="Adres email"/>
+            <label for="peselInput">PESEL</label>
+            <input type="text" class="form-control" id="peselInput" placeholder="PESEL" value={peselInput} onChange={(event) => setPeselInput(event.target.value)}/>
         </div>
 
         <div class="form-group">
             <label for="passwordInput">Hasło</label>
-            <input type="password" class="form-control" id="passwordInput" placeholder="Hasło"/>
+            <input type="password" class="form-control" id="passwordInput" placeholder="Hasło" value={passwordInput} onChange={(event) => setPasswordInput(event.target.value)}/>
         </div>
 
         <button type="submit" class="btn btn-primary">Zarejestruj się</button>
