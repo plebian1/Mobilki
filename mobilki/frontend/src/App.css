@@ -2,50 +2,15 @@
 @import url("react-datepicker/dist/react-datepicker.css");
 .App {
   text-align: center;
-  height: 100%;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 #root {
-  height: 100%;
+  min-height: 100vh;
 }
 
 body {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .form-group {
@@ -53,7 +18,7 @@ body {
 }
 
 .center {
-  height: 100%;
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -62,4 +27,38 @@ body {
 
 .pt-24 {
   padding-top: 24px;
+}
+
+.pb-24 {
+  padding-bottom: 24px;
+}
+
+.wd-60 {
+  width: 60px;
+}
+
+.wd-350 {
+  width: 350px;
+}
+
+.wd-100-p {
+  width: 100%;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  margin-bottom: 10px;
+}
+
+.font-16 {
+  font-size: 16pt;
+}
+
+.not-border-radius {
+  border-radius: 0% !important;
+}
+
+.text-center {
+  text-align: center;
 }

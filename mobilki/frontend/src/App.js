@@ -6,7 +6,6 @@ import HomePage from "./Pages/HomePage";
 import LoginPage from "./Pages/LoginPage";
 import RegisterPage from "./Pages/RegisterPage";
 import ResultsDetailsPage from "./Pages/ResultsDetailsPage";
-import ResultsPage from "./Pages/ResultsPage";
 function App() {
   return (
     <Router>
@@ -47,10 +46,10 @@ function App() {
           />
 
           <Route 
-            path="/appointment/details"
+            path="/appointment/details/:id"
             render={(props) =>
               sessionStorage.getItem("isAuthenticated") ? (
-                <AppointmentDetailsPage {...props} />
+                <AppointmentDetailsPage id={props.match.params.id} />
               ) : (
                 <Redirect to="/login" />
               )
@@ -68,21 +67,10 @@ function App() {
             }
           />
           <Route 
-            path="/results/details"
+            path="/results/:id"
             render={(props) =>
               sessionStorage.getItem("isAuthenticated") ? (
-                <ResultsDetailsPage {...props} />
-              ) : (
-                <Redirect to="/login" />
-              )
-            }
-          />
-
-          <Route 
-            path="/results"
-            render={(props) =>
-              sessionStorage.getItem("isAuthenticated") ? (
-                <ResultsPage {...props} />
+                <ResultsDetailsPage id={props.match.params.id} />
               ) : (
                 <Redirect to="/login" />
               )
