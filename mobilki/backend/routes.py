@@ -239,11 +239,30 @@ class Api_single_apointment_details(Resource):
 
 # POST REQUESTY
 
+
+
+
+insert_person_data = name_space_logins.model(
+    "insert_person_data",
+    {
+        "name": fields.String(description="ergas", required=True),
+        "password": fields.String(description="aergahaess", required=True),
+        "pesel": fields.String(description="haerdress", required=True),
+    },
+)
+
+
+
 # REJESTRACJA UZYTKOWNIKA
-@name_space_logins.route('/<pesel>/<password>/<imie>/<nazwisko>', methods=['POST', 'DELETE'])
+@name_space_logins.route('/register', methods=['POST', 'DELETE'])
 class Api_register_into_system(Resource):
-    def post(self, pesel, password, imie, nazwisko):
-        name = imie + " " + nazwisko
+    @name_space_logins.expect(insert_person_data)
+    def post(self):
+        json_data = httprequest.json
+        name = json_data["name"]
+        pesel = json_data["pesel"]
+        password = json_data["password"]
+
 
         # utworzenie uzytkownika w Users
         user = Users(Name=name)
