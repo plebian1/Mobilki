@@ -1,33 +1,39 @@
+import React, { useEffect, useState } from 'react';
+import useFetch from "use-http";
 import ExamCheck from "./ExamCheck";
-const AppointmentDetailsPage = () =>  {
 
-    const exams = [
-        "OB",
-        "Morflogoia",
-        "OB",
-        "Morflogoia",
-        "OB",
-        "Morflogoia",
-        "OB",
-        "Morflogoia",
-        "OB",
-        "Morflogoia",
-        "OB",
-        "Morflogoia",
-        "OB",
-        "Morflogoia",
-        "OB",
-        "Morflogoia",
-        "OB",
-        "Morflogoia",
-        "OB",
-        "Morflogoia"
-    ]
+const AppointmentDetailsPage = ({appointmentId}) =>  {
+
+    const [exams, setExams] = useState([]);
+    const { get, post, response } = useFetch(
+        'api/appointments/details/' + appointmentId,
+        {
+            headers: {
+                userId: sessionStorage.getItem('userId'),
+            },
+            cachePolicy: 'no-cache',
+        }
+    );
+
+    const getExams = async () =>  {
+        const data = await get(""); 
+
+        if (response.ok) {
+            setExams(data);
+        }
+    };
+
+    const addDetail = async (id) =>  {
+        await post("", {
+            appointmentId: appointmentId,
+            examId: id
+        }); 
+    };
 
     function AvailableExams() {
         const availableExams =[]; 
         for(var i=0; i<exams.length; i++) {
-            availableExams.push(<ExamCheck examId={i} examName={exams[i]}></ExamCheck>);
+            availableExams.push(<ExamCheck examId={exams[i].id} examName={exams[i].name}></ExamCheck>);
         }
         return availableExams; 
     }
@@ -36,9 +42,14 @@ const AppointmentDetailsPage = () =>  {
         const inputs = document.getElementsByClassName('form-check-input');
         for(var i=0; i<inputs.length; i++) {
             if(inputs[i].checked)
-                console.log("post" + inputs[i].id);
+                addDetail(inputs[i].id);
         }
     }
+
+    useEffect(() => {
+        getExams();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); 
 
     return (
     <div class="center">
