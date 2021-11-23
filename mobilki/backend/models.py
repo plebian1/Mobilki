@@ -1,23 +1,108 @@
-from app import db,ma
+from app import *
 from datetime import datetime
+from sqlalchemy.types import TypeDecorator, CHAR
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 
 
-class Articles(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100),nullable=False)
-    body = db.Column(db.Text, nullable=False)
-    date = db.Column(db.DateTime(), default=datetime.utcnow)
+class Users(db.Model):
+    __tablename__ = 'Users'
+    UserId = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    Name = db.Column(db.String(), nullable=False, unique=True)
 
 
-    def __repr__(self):
-        return "<Articles %r>" % self.title
-
-# Generate marshmallow Schemas from your models
-class ArticlesShema(ma.Schema):
+class UsersShema(ma.Schema):
     class Meta:
         # Fields to expose
-        fields = ("id","title", "body", "date")
+        fields = ("UserId", "Name")
 
 
-article_schema = ArticlesShema()
-articles_schema = ArticlesShema(many=True)
+user_schema = UsersShema()
+users_schema = UsersShema(many=True)
+
+
+class LoginData(db.Model):
+    __tablename__ = 'LoginData'
+    PESEL = db.Column(db.String(), nullable=False, unique=True)
+    Password = db.Column(db.String())
+    UserId = db.Column(UUID(as_uuid=True), db.ForeignKey('Users.UserId'),
+                       primary_key=True)  # !!!!!!! POTENCJALNE NIE WIADOMO CO
+
+
+class LoginDataShema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ("UserId", "Password", "PESEL")
+
+
+loginData_schema = LoginDataShema()
+loginDatas_schema = LoginDataShema(many=True)
+
+
+class DiagnosticsTypes(db.Model):
+    __tablename__ = 'DiagnosticsTypes'
+    DiagnosticsTypesId = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    Name = db.Column(db.String(), nullable=False, unique=True)
+    Price = db.Column(db.String(), nullable=False, unique=False)
+
+
+class DiagnosticsTypesShema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ("DiagnosticsTypesId", "Name", "Price")
+
+
+diagnosticsType_schema = DiagnosticsTypesShema()
+diagnosticsTypes_schema = DiagnosticsTypesShema(many=True)
+
+
+class Appointments(db.Model):
+    __tablename__ = 'Appointments'
+    AppointmentsId = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    Date = db.Column(db.String(), nullable=False, unique=True)
+    UserId = db.Column(UUID(as_uuid=True), db.ForeignKey('Users.UserId'))
+
+
+class AppointmentsSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ("AppointmentsId", "Date", "UserId")
+
+
+appointment_schema = AppointmentsSchema()
+appointments_schema = AppointmentsSchema(many=True)
+
+
+class DiagnosticsResults(db.Model):
+    __tablename__ = 'DiagnosticsResults'
+    DiagnosticsResultsId = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    Result = db.Column(db.String(), nullable=False, unique=True)
+    AppointmentsId = db.Column(UUID(as_uuid=True), db.ForeignKey('Appointments.AppointmentsId'))
+    DiagnosticsTypesId = db.Column(UUID(as_uuid=True), db.ForeignKey('DiagnosticsTypes.DiagnosticsTypesId'))
+
+
+class DiagnosticsResultsSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ("DiagnosticsResultsId", "Result", "AppointmentsId", "DiagnosticsTypesId")
+
+
+diagnosticsResult_schema = DiagnosticsResultsSchema()
+diagnosticsResults_schema = DiagnosticsResultsSchema(many=True)
+
+
+class AppointmentDetails(db.Model):
+    __tablename__ = 'AppointmentDetails'
+    AppointmentDetailsId = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    AppointmentsId = db.Column(UUID(as_uuid=True), db.ForeignKey('Appointments.AppointmentsId'))
+    DiagnosticsTypesId = db.Column(UUID(as_uuid=True), db.ForeignKey('DiagnosticsTypes.DiagnosticsTypesId'))
+
+
+class AppointmentDetailsSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ("AppointmentDetailsId", "AppointmentsId", "DiagnosticsTypesId")
+
+
+appointmentDetail_schema = AppointmentDetailsSchema()
+appointmentDetails_schema = AppointmentDetailsSchema(many=True)
