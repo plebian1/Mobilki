@@ -2,8 +2,8 @@ import NewAppointmentDetails from "./NewAppointmentDetails";
 import OldAppointmentDetails from "./OldAppointmentDetails";
 const HomePage = () =>  {
 
-    const oldAppointments = ["1", "2", "3"]; 
-    const newAppointments = ["1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3"];
+    const oldAppointments = ["1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3"]; 
+    const newAppointments = ["1", "2", "3"];
 
     function OldAppointments() {
 
