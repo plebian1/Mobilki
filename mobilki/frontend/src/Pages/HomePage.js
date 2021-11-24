@@ -28,7 +28,7 @@ const HomePage = () =>  {
             return (<p>Brak wcześniejszych wizyt</p>)
 
         for(var i=0; i<oldAppointments.length; i++) {
-            appointments.push(<OldAppointmentDetails appointmentId={oldAppointments[i].appointmentId} appointmentDate={oldAppointments[i].date}></OldAppointmentDetails>);
+            appointments.push(<OldAppointmentDetails appointmentId={oldAppointments[i].AppointmentsId} appointmentDate={oldAppointments[i].Date}></OldAppointmentDetails>);
         }
         return appointments; 
     }
@@ -40,7 +40,7 @@ const HomePage = () =>  {
             return (<p>Brak nadchodzących wizyt</p>)
 
         for(var i=0; i<newAppointments.length; i++) {
-            appointments.push(<NewAppointmentDetails appointmentId={newAppointments[i].appointmentId} appointmentDate={newAppointments[i].date}></NewAppointmentDetails>);
+            appointments.push(<NewAppointmentDetails appointmentId={newAppointments[i].AppointmentsId} appointmentDate={newAppointments[i].Date}></NewAppointmentDetails>);
         }
         return appointments; 
     }
@@ -52,11 +52,11 @@ const HomePage = () =>  {
             setAppointments(data);
         }
 
-        newAppointmentsTemp = [];
-        oldAppointmentsTemp = [];
+        var newAppointmentsTemp = [];
+        var oldAppointmentsTemp = [];
         
         for(var i=0; i<data.length; i++) {
-            if(data[i].date > new Date())
+            if(data[i].Date > new Date())
                 newAppointmentsTemp.push(data[i])
             else
                 oldAppointmentsTemp.push(data[i])
