@@ -46,7 +46,7 @@ const HomePage = () =>  {
     }
 
     const getAppointments = async () =>  {
-        const data = await get(""); 
+        const data = await get("");
 
         if (response.ok) {
             setAppointments(data);

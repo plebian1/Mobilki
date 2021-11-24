@@ -5,7 +5,7 @@ import ExamCheck from "./ExamCheck";
 const AppointmentDetailsPage = ({appointmentId}) =>  {
 
     const [exams, setExams] = useState([]);
-    const { post, response } = useFetch(
+    const { post } = useFetch(
         'api/appointments/details/' + appointmentId,
         {
             headers: {
@@ -27,6 +27,7 @@ const AppointmentDetailsPage = ({appointmentId}) =>  {
 
         if (response.ok) {
             setExams(data);
+            console.log(data)
         }
     };
 
@@ -40,7 +41,7 @@ const AppointmentDetailsPage = ({appointmentId}) =>  {
     function AvailableExams() {
         const availableExams =[]; 
         for(var i=0; i<exams.length; i++) {
-            availableExams.push(<ExamCheck examId={exams[i].id} examName={exams[i].name}></ExamCheck>);
+            availableExams.push(<ExamCheck examId={exams[i].DiagnosticsTypesId} examName={exams[i].Name}></ExamCheck>);
         }
         return availableExams; 
     }

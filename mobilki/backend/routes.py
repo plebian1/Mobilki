@@ -18,9 +18,7 @@ class Api_all_users(Resource):
 class Api_single_user(Resource):
     def get(self):
 
-        json_data = httprequest.json
-        user_id = json_data.headers
-        print(user_id)
+        user_id = httprequest.headers["Userid"]
 
         userquery = Users.query.filter_by(UserId=user_id)
         for i in userquery:
@@ -46,9 +44,7 @@ class Api_all_LoginData(Resource):
 class Api_single_login(Resource):
     def get(self):
 
-        json_data = httprequest.json
-        user_id = json_data.headers
-        print(user_id)
+        user_id = httprequest.headers["Userid"]
 
         userquery = LoginData.query.filter_by(UserId=user_id)
         for i in userquery:
@@ -132,9 +128,7 @@ class Api_all_Appointments(Resource):
 class Api_single_user_apointments(Resource):
     def get(self):
 
-        json_data = httprequest.json
-        user_id = json_data.headers
-        print(user_id)
+        user_id = httprequest.headers["Userid"]
 
         apointmentquery = Appointments.query.filter_by(UserId=user_id)
         apointmenttab = []
@@ -172,9 +166,7 @@ class Api_single_user_apointments(Resource):
 class Api_single_user_last_apointment(Resource):
     def get(self):
 
-        json_data = httprequest.json
-        user_id = json_data.headers
-        print(user_id)
+        user_id = httprequest.headers["Userid"]
 
         apointmentquery = Appointments.query.filter_by(UserId=user_id)
         for i in apointmentquery:
@@ -240,7 +232,7 @@ class Api_single_appointment_results(Resource):
 class Api_all_AppointmentDetails(Resource):
     def get(self):
         details = AppointmentDetails.query.all()
-        results = appointmentDetails.dump(details)
+        results = diagnosticsResults_schema.dump(details)
 
         return jsonify(results)
 
@@ -397,13 +389,14 @@ insert_apointment_data = name_space_appointments.model(
 
 # NOWY APPOINTMENT
 
-@name_space_appointments.route('', methods=['POST', 'DELETE'])
+@name_space_appointments.route('/new_appointment', methods=['POST', 'DELETE'])
 class Api_make_new_appointment(Resource):
     @name_space_appointments.expect(insert_apointment_data)
     def post(self):
 
+
         json_data = httprequest.json
-        user_id = json_data.headers
+        user_id = httprequest.headers["Userid"]
         date = json_data["date"]
         time = json_data["time"]
 
