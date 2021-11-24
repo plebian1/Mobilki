@@ -62,7 +62,7 @@ const AppointmentDetailsPage = ({appointmentId}) =>  {
     return (
     <div class="center">
         <h3 class="pt-24">Wybierz badania, które chcesz wykonać podczas wizyty</h3>
-        <table class="table wd-350"><tbody>
+        <table class="table wd-350-500"><tbody>
         <AvailableExams></AvailableExams>
         </tbody></table>
         <div class="pt-24 pb-24">

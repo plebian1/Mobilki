@@ -1,8 +1,8 @@
-const NewAppointmentDetails = ({appointmentId, appointmentDate}) =>  {
+const NewAppointmentDetails = ({appointmentId, appointmentDate, appointmentTime }) =>  {
 
     return (
     <tr>
-    <td class="text-left"><p>{appointmentDate.toLocaleDateString()}</p></td>
+    <td class="text-left"><p>{appointmentDate} {appointmentTime}</p></td>
     </tr>
     );
 }
