@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
+import useFetch from "use-http";
 import NavbarNotLogged from "./NavbarNotLogged";
+
 const LoginPage = () =>  {
 
     const history = useHistory();
-<<<<<<< Updated upstream
-=======
     const [peselInput, setPeselInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
 
@@ -24,33 +24,27 @@ const LoginPage = () =>  {
             pesel: peselInput,
           }).then((res) => {
             if (response.ok) {
-                console.log(res);
-                console.log(res.result);
                 sessionStorage.setItem("userId", res.UserId);
                 sessionStorage.setItem("isAuthenticated", true);
                 history.push("/");
             }});
     };
->>>>>>> Stashed changes
-    
-    const login = () => {
-        sessionStorage.setItem("isAuthenticated", true);
-        history.push("/");
-    }
+
     return (
         <div>
         <NavbarNotLogged></NavbarNotLogged>
     <div class="center">
         <h2>Zaloguj się</h2>
         <form onSubmit={login}>
+
         <div class="form-group">
-            <label for="emailInput">Adres email</label>
-            <input type="email" class="form-control" id="emailInput" placeholder="Adres email"/>
+            <label for="peselInput">PESEL</label>
+            <input type="text" class="form-control" id="peselInput" placeholder="PESEL" value={peselInput} onChange={(event) => setPeselInput(event.target.value)}/>
         </div>
 
         <div class="form-group">
             <label for="passwordInput">Hasło</label>
-            <input type="password" class="form-control" id="passwordInput" placeholder="Hasło"/>
+            <input type="password" class="form-control" id="passwordInput" placeholder="Hasło" value={passwordInput} onChange={(event) => setPasswordInput(event.target.value)}/>
         </div>
 
         <button type="submit" class="btn btn-primary">Zaloguj się</button>

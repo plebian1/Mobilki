@@ -46,10 +46,10 @@ function App() {
           />
 
           <Route 
-            path="/appointment/details/:id"
+            path="/appointment/details/:appointmentId"
             render={(props) =>
               sessionStorage.getItem("isAuthenticated") ? (
-                <AppointmentDetailsPage id={props.match.params.id} />
+                <AppointmentDetailsPage appointmentId={props.match.params.appointmentId} />
               ) : (
                 <Redirect to="/login" />
               )

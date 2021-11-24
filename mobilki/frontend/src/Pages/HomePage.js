@@ -1,9 +1,24 @@
+import React, { useEffect, useState } from 'react';
+import useFetch from "use-http";
 import NewAppointmentDetails from "./NewAppointmentDetails";
 import OldAppointmentDetails from "./OldAppointmentDetails";
+
 const HomePage = () =>  {
 
-    const oldAppointments = ["1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3"]; 
-    const newAppointments = ["1", "2", "3"];
+    const [appointments, setAppointments] = useState([]);
+
+    const oldAppointments = []; 
+    const newAppointments = [];
+
+    const { get, response } = useFetch(
+        'api/appointments',
+        {
+            headers: {
+                userId: sessionStorage.getItem('userId'),
+            },
+            cachePolicy: 'no-cache',
+        }
+    );
 
     function OldAppointments() {
 
@@ -13,7 +28,7 @@ const HomePage = () =>  {
             return (<p>Brak wcześniejszych wizyt</p>)
 
         for(var i=0; i<oldAppointments.length; i++) {
-            appointments.push(<OldAppointmentDetails appointmentId={i} appointmentDate={new Date(i,i,i)}></OldAppointmentDetails>);
+            appointments.push(<OldAppointmentDetails appointmentId={oldAppointments[i].appointmentId} appointmentDate={oldAppointments[i].date}></OldAppointmentDetails>);
         }
         return appointments; 
     }
@@ -25,10 +40,30 @@ const HomePage = () =>  {
             return (<p>Brak nadchodzących wizyt</p>)
 
         for(var i=0; i<newAppointments.length; i++) {
-            appointments.push(<NewAppointmentDetails appointmentId={i} appointmentDate={new Date(i,i,i)}></NewAppointmentDetails>);
+            appointments.push(<NewAppointmentDetails appointmentId={newAppointments[i].appointmentId} appointmentDate={newAppointments[i].date}></NewAppointmentDetails>);
         }
         return appointments; 
     }
+
+    const getAppointments = async () =>  {
+        const data = await get(""); 
+
+        if (response.ok) {
+            setAppointments(data);
+        }
+
+        for(var i=0; i<appointments.length; i++) {
+            if(appointments[i].date > new Date())
+                newAppointments.push(appointments[i])
+            else
+                oldAppointments.push(appointments[i])
+        }
+    };
+
+    useEffect(() => {
+        getAppointments();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []); 
 
     return (
     <div>
