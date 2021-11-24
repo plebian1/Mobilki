@@ -13,7 +13,7 @@ const AppointmentPage = () =>  {
   const [appointmentId, setAppointmentId] = useState();
 
   const {post, response } = useFetch(
-      'api/appointments',
+      'api/appointments/new_appointment',
       {
           headers: {
               userId: sessionStorage.getItem('userId'),
@@ -33,8 +33,8 @@ const AppointmentPage = () =>  {
   const addAppointment = async () => {
 
     await post("", {
-      date: selectedDate,
-      time: selectedTime
+      date: selectedDate.toLocaleDateString(),
+      time: selectedTime.getHours() + ":" + selectedTime.getMinutes()
     }).then((res) => {
       if (response.ok) {
         setAppointmentId(res.result.id);

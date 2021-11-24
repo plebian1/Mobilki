@@ -11,7 +11,7 @@ const HomePage = () =>  {
     const newAppointments = [];
 
     const { get, response } = useFetch(
-        'api/appointments',
+        'api/appointments/user',
         {
             headers: {
                 userId: sessionStorage.getItem('userId'),

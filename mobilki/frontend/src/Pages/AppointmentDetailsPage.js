@@ -5,12 +5,19 @@ import ExamCheck from "./ExamCheck";
 const AppointmentDetailsPage = ({appointmentId}) =>  {
 
     const [exams, setExams] = useState([]);
-    const { get, post, response } = useFetch(
+    const { post, response } = useFetch(
         'api/appointments/details/' + appointmentId,
         {
             headers: {
                 userId: sessionStorage.getItem('userId'),
             },
+            cachePolicy: 'no-cache',
+        }
+    );
+
+    const { get, response } = useFetch(
+        'api/diagnostics',
+        {
             cachePolicy: 'no-cache',
         }
     );
