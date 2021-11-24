@@ -10,7 +10,7 @@ const LoginPage = () =>  {
     const [passwordInput, setPasswordInput] = useState("");
 
     const { post, response } = useFetch(
-        '/api/logins',
+        '/api/logins/login',
         {
           cachePolicy: 'no-cache',
         }
@@ -24,12 +24,12 @@ const LoginPage = () =>  {
             pesel: peselInput,
           }).then((res) => {
             if (response.ok) {
-                sessionStorage.setItem("userId", res.result.userId);
+                sessionStorage.setItem("userId", res.UserId);
                 sessionStorage.setItem("isAuthenticated", true);
                 history.push("/");
             }});
     };
-    
+
     return (
         <div>
         <NavbarNotLogged></NavbarNotLogged>

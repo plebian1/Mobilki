@@ -14,9 +14,13 @@ class Api_all_users(Resource):
         return jsonify(results)
 
 
-@name_space_users.route('/<user_id>', methods=['GET', 'DELETE'])
+@name_space_users.route('', methods=['GET', 'DELETE'])
 class Api_single_user(Resource):
-    def get(self, user_id):
+    def get(self):
+
+        json_data = httprequest.json
+        user_id = json_data.headers
+        print(user_id)
 
         userquery = Users.query.filter_by(UserId=user_id)
         for i in userquery:
@@ -38,9 +42,13 @@ class Api_all_LoginData(Resource):
         return jsonify(results)
 
 
-@name_space_logins.route('/<user_id>', methods=['GET', 'DELETE'])
+@name_space_logins.route('/user', methods=['GET', 'DELETE'])
 class Api_single_login(Resource):
-    def get(self, user_id):
+    def get(self):
+
+        json_data = httprequest.json
+        user_id = json_data.headers
+        print(user_id)
 
         userquery = LoginData.query.filter_by(UserId=user_id)
         for i in userquery:
@@ -53,7 +61,7 @@ class Api_single_login(Resource):
             abort(404, description="Resource not found")
 
 
-@name_space_logins.route('/<pesel>/<password>', methods=['GET', 'DELETE'])
+"""@name_space_logins.route('/<pesel>/<password>', methods=['GET', 'DELETE'])
 class Api_log_into_system(Resource):
     def get(self, pesel, password):
 
@@ -77,6 +85,7 @@ class Api_log_into_system(Resource):
                 return "incorect pesel or password"
         except UnboundLocalError:
             return "incorect pesel or password"
+            """
 
 #Diagnostics
 
@@ -119,9 +128,13 @@ class Api_all_Appointments(Resource):
         return jsonify(results)
 
 
-@name_space_appointments.route('/<user_id>', methods=['GET', 'DELETE'])
+@name_space_appointments.route('/user', methods=['GET', 'DELETE'])
 class Api_single_user_apointments(Resource):
-    def get(self, user_id):
+    def get(self):
+
+        json_data = httprequest.json
+        user_id = json_data.headers
+        print(user_id)
 
         apointmentquery = Appointments.query.filter_by(UserId=user_id)
         apointmenttab = []
@@ -135,9 +148,33 @@ class Api_single_user_apointments(Resource):
             abort(404, description="Resource not found")
 
 
-@name_space_appointments.route('/last/<user_id>', methods=['GET', 'DELETE'])
+# CZY TO O TO CHODZILO???
+@name_space_appointments.route('/<date>', methods=['GET', 'DELETE'])
+class Api_single_user_apointments(Resource):
+    def get(self,date):
+
+
+        apointmentquery = Appointments.query.filter_by(Date=date)
+        apointmenttab = []
+        for i in apointmentquery:
+            apointmenttab.append(i)
+
+        try:
+            results = appointments_schema.dump(apointmenttab)
+            return jsonify(results)
+        except UnboundLocalError:
+            abort(404, description="Resource not found")
+
+
+
+
+@name_space_appointments.route('/last', methods=['GET', 'DELETE'])
 class Api_single_user_last_apointment(Resource):
-    def get(self, user_id):
+    def get(self):
+
+        json_data = httprequest.json
+        user_id = json_data.headers
+        print(user_id)
 
         apointmentquery = Appointments.query.filter_by(UserId=user_id)
         for i in apointmentquery:
@@ -160,9 +197,13 @@ class Api_all_DiagnosticsResults(Resource):
         return jsonify(results)
 
 
-@name_space_diagnostics.route('/results/<user_id>', methods=['GET', 'DELETE'])
+@name_space_diagnostics.route('/results/user', methods=['GET', 'DELETE'])
 class Api_single_user_details(Resource):
-    def get(self, user_id):
+    def get(self):
+
+        json_data = httprequest.json
+        user_id = json_data.headers
+        print(user_id)
 
         apointmentquery = Appointments.query.filter_by(UserId=user_id)
         for i in apointmentquery:
@@ -204,9 +245,14 @@ class Api_all_AppointmentDetails(Resource):
         return jsonify(results)
 
 
-@name_space_appointments.route('/details/<user_id>', methods=['GET', 'DELETE'])
+@name_space_appointments.route('/details/user', methods=['GET', 'DELETE'])
 class Api_single_user_apointments_details(Resource):
-    def get(self, user_id):
+    def get(self):
+
+        json_data = httprequest.json
+        user_id = json_data.headers
+        print(user_id)
+
 
         apointmentquery = Appointments.query.filter_by(UserId=user_id)
         for i in apointmentquery:
@@ -272,7 +318,7 @@ class Api_register_into_system(Resource):
         except sqlalchemy.exc.IntegrityError:
             db.session.close()
             print("this user is already in DB")
-            return "this user is already in DB"
+            return "this user is already in DB", 400
         # wyciagnij ostatniego dodanego uzytkownika o danej nazwie
         userquery = Users.query.filter_by(Name=name)
         for i in userquery:
@@ -286,15 +332,82 @@ class Api_register_into_system(Resource):
         except sqlalchemy.exc.IntegrityError:
             db.session.close()
             print("this user is already in DB")
-            return "this user is already in DB"
+            return "this user is already in DB", 400
+        return user
+
+
+
+# logowanie
+
+
+insert_person_login_data = name_space_logins.model(
+    "insert_person_login_data",
+    {
+        "password": fields.String(description="aergahaess", required=True),
+        "pesel": fields.String(description="haerdress", required=True),
+    },
+)
+
+@name_space_logins.route('/login', methods=['POST', 'DELETE'])
+class Api_log_into_system2(Resource):
+    @name_space_logins.expect(insert_person_login_data)
+    def post(self):
+
+        json_data = httprequest.json
+        pesel = json_data["pesel"]
+        password = json_data["password"]
+
+        userquery1 = LoginData.query.filter_by(PESEL=pesel)
+        for i in userquery1:
+            user1 = i
+
+        userquery2 = LoginData.query.filter_by(Password=password)
+
+        for i in userquery2:
+            user2 = i
+        try:
+            if user1 == user2:
+
+                userquery = Users.query.filter_by(UserId=user1.UserId)
+                for i in userquery:
+                    user = i
+                results = user_schema.dump(user)
+                return jsonify(results)
+            else:
+                return "incorect pesel or password", 400
+        except UnboundLocalError:
+            return "incorect pesel or password", 400
+
+        return user1
+
+
+
+
+
+insert_apointment_data = name_space_appointments.model(
+    "insert_apointment_data",
+    {
+
+        "date": fields.String(description="aergahaess", required=True),
+        "time": fields.String(description="haerdress", required=True),
+    },
+)
+
 
 
 # NOWY APPOINTMENT
 
-@name_space_appointments.route('/<user_id>/<data>', methods=['POST', 'DELETE'])
+@name_space_appointments.route('', methods=['POST', 'DELETE'])
 class Api_make_new_appointment(Resource):
-    def post(self, user_id, data):
-        appointment = Appointments(UserId=user_id, Date=data)
+    @name_space_appointments.expect(insert_apointment_data)
+    def post(self):
+
+        json_data = httprequest.json
+        user_id = json_data.headers
+        date = json_data["date"]
+        time = json_data["time"]
+
+        appointment = Appointments(UserId=user_id, Date=date, Time = time)
         try:
             db.session.add(appointment)
             db.session.commit()
@@ -302,6 +415,8 @@ class Api_make_new_appointment(Resource):
             db.session.close()
             print("Sth went wrong with adding apointment, propably it is already added")
             return "Sth went wrong with adding apointment, propably it is already added"
+
+        return appointment.AppointmentsId
 
 # szczegoly badania
 @name_space_appointments.route('/details/<apointment_id>/<diag_id>', methods=['POST', 'DELETE'])
@@ -314,7 +429,10 @@ class Api_add_details_to_apointment(Resource):
         except sqlalchemy.exc.IntegrityError:
             db.session.close()
             print("Sth went wrong with adding details to apointment, propably it is already added")
-            return "Sth went wrong with adding details to apointment, propably it is already added"
+            #return "Sth went wrong with adding details to apointment, propably it is already added"
+            return 400
+
+        return 200
 
 # dodawanie wynikow do badania
 @name_space_diagnostics.route('/results/<apointment_id>/<diag_id>/<result>', methods=['POST', 'DELETE'])

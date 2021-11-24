@@ -16,8 +16,10 @@ const RegisterPage = () =>  {
         }
       );
 
+
     const register = async (event) =>  {
         event.preventDefault();
+
 
         await post("", {
             name: nameInput,
@@ -25,12 +27,13 @@ const RegisterPage = () =>  {
             pesel: peselInput,
           }).then((res) => {
             if (response.ok) {
-                sessionStorage.setItem("userId", res.result.userId);
+
+                sessionStorage.setItem("userId", res.userId);
                 sessionStorage.setItem("isAuthenticated", true);
                 history.push("/");
             }});
     };
-    
+
     return (
         <div>
         <NavbarNotLogged></NavbarNotLogged>
