@@ -4,6 +4,34 @@ import NavbarNotLogged from "./NavbarNotLogged";
 const LoginPage = () =>  {
 
     const history = useHistory();
+<<<<<<< Updated upstream
+=======
+    const [peselInput, setPeselInput] = useState("");
+    const [passwordInput, setPasswordInput] = useState("");
+
+    const { post, response } = useFetch(
+        '/api/logins/login',
+        {
+          cachePolicy: 'no-cache',
+        }
+      );
+
+    const login = async (event) =>  {
+        event.preventDefault();
+
+        await post("", {
+            password: passwordInput,
+            pesel: peselInput,
+          }).then((res) => {
+            if (response.ok) {
+                console.log(res);
+                console.log(res.result);
+                sessionStorage.setItem("userId", res.UserId);
+                sessionStorage.setItem("isAuthenticated", true);
+                history.push("/");
+            }});
+    };
+>>>>>>> Stashed changes
     
     const login = () => {
         sessionStorage.setItem("isAuthenticated", true);

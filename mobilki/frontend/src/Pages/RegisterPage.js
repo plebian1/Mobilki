@@ -31,11 +31,26 @@ const RegisterPage = () =>  {
         ).then(res => res.json()).then(data => {
     });
 
+<<<<<<< Updated upstream
       //  sessionStorage.setItem("isAuthenticated", true);
       // history.push("/");
 
 
     }
+=======
+        await post("", {
+            name: nameInput,
+            password: passwordInput,
+            pesel: peselInput,
+          }).then((res) => {
+            if (response.ok) {
+ //               sessionStorage.setItem("userId", res.result.userId);
+                sessionStorage.setItem("isAuthenticated", true);
+                history.push("/");
+            }});
+    };
+    
+>>>>>>> Stashed changes
     return (
         <div>
         <NavbarNotLogged></NavbarNotLogged>

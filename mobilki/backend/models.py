@@ -8,7 +8,7 @@ import uuid
 class Users(db.Model):
     __tablename__ = 'Users'
     UserId = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    Name = db.Column(db.String(), nullable=False, unique=True)
+    Name = db.Column(db.String(), nullable=False, unique=False)
 
 
 class UsersShema(ma.Schema):
@@ -59,14 +59,15 @@ diagnosticsTypes_schema = DiagnosticsTypesShema(many=True)
 class Appointments(db.Model):
     __tablename__ = 'Appointments'
     AppointmentsId = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    Date = db.Column(db.String(), nullable=False, unique=True)
+    Date = db.Column(db.String(), nullable=False, unique=False)
+    Time = db.Column(db.String(), nullable=False, unique=False)
     UserId = db.Column(UUID(as_uuid=True), db.ForeignKey('Users.UserId'))
 
 
 class AppointmentsSchema(ma.Schema):
     class Meta:
         # Fields to expose
-        fields = ("AppointmentsId", "Date", "UserId")
+        fields = ("AppointmentsId", "Date", "Time" "UserId")
 
 
 appointment_schema = AppointmentsSchema()
