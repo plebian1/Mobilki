@@ -42,6 +42,11 @@ body {
   width: 350px;
 }
 
+.wd-350-500 {
+  min-width: 350px;
+  max-width: 500px;
+}
+
 .wd-100-p {
   width: 100%;
 }

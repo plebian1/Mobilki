@@ -20,7 +20,7 @@ const ResultsDetailsPage = ({id}) =>  {
         const results = [];
 
         for(var i=0; i<appointmentResults.length; i++) {
-            results.push(<ResultDetails examName={appointmentResults[i].name} examResult={appointmentResults[i].result}></ResultDetails>);
+            results.push(<ResultDetails examName={appointmentResults[i].Name} examResult={appointmentResults[i].Result}></ResultDetails>);
         }
         return results; 
     }

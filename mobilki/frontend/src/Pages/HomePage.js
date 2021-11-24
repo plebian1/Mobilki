@@ -28,7 +28,7 @@ const HomePage = () =>  {
             return (<p>Brak wcześniejszych wizyt</p>)
 
         for(var i=0; i<oldAppointments.length; i++) {
-            appointments.push(<OldAppointmentDetails appointmentId={oldAppointments[i].AppointmentsId} appointmentDate={oldAppointments[i].Date}></OldAppointmentDetails>);
+            appointments.push(<OldAppointmentDetails appointmentId={oldAppointments[i].AppointmentsId} appointmentDate={oldAppointments[i].Date} appointmentTime={oldAppointments[i].Time}></OldAppointmentDetails>);
         }
         return appointments; 
     }
@@ -40,7 +40,7 @@ const HomePage = () =>  {
             return (<p>Brak nadchodzących wizyt</p>)
 
         for(var i=0; i<newAppointments.length; i++) {
-            appointments.push(<NewAppointmentDetails appointmentId={newAppointments[i].AppointmentsId} appointmentDate={newAppointments[i].Date}></NewAppointmentDetails>);
+            appointments.push(<NewAppointmentDetails appointmentId={newAppointments[i].AppointmentsId} appointmentDate={newAppointments[i].Date} appointmentTime={newAppointments[i].Time}></NewAppointmentDetails>);
         }
         return appointments; 
     }
@@ -56,10 +56,15 @@ const HomePage = () =>  {
         var oldAppointmentsTemp = [];
         
         for(var i=0; i<data.length; i++) {
-            if(data[i].Date > new Date())
-                newAppointmentsTemp.push(data[i])
-            else
+            const words = data[i].Date.split('.');
+            if(
+                (new Date().getFullYear() < words[2]) || 
+                (new Date().getFullYear() == words[2] && new Date().getMonth() + 1 > words[1]) || 
+                (new Date().getFullYear() == words[2] && new Date().getMonth() + 1 == words[1] && new Date().getDate() > words[0])
+                )
                 oldAppointmentsTemp.push(data[i])
+            else
+                newAppointmentsTemp.push(data[i])
         }
 
         setNewAppointments(newAppointmentsTemp);
