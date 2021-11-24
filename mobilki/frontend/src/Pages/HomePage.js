@@ -7,8 +7,8 @@ const HomePage = () =>  {
 
     const [appointments, setAppointments] = useState([]);
 
-    const oldAppointments = []; 
-    const newAppointments = [];
+    const [oldAppointments, setOldAppointments] = useState([]);
+    const [newAppointments, setNewAppointments] = useState([]);
 
     const { get, response } = useFetch(
         'api/appointments/user',
@@ -52,12 +52,18 @@ const HomePage = () =>  {
             setAppointments(data);
         }
 
-        for(var i=0; i<appointments.length; i++) {
-            if(appointments[i].date > new Date())
-                newAppointments.push(appointments[i])
+        newAppointmentsTemp = [];
+        oldAppointmentsTemp = [];
+        
+        for(var i=0; i<data.length; i++) {
+            if(data[i].date > new Date())
+                newAppointmentsTemp.push(data[i])
             else
-                oldAppointments.push(appointments[i])
+                oldAppointmentsTemp.push(data[i])
         }
+
+        setNewAppointments(newAppointmentsTemp);
+        setOldAppointments(oldAppointmentsTemp);
     };
 
     useEffect(() => {
