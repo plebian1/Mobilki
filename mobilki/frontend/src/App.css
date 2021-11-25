@@ -85,3 +85,7 @@ body {
   color: white;
   text-decoration: none !important;
 }
+
+.react-datepicker-popper {
+  transform: translate3d(33vw, 53vh, 0px) !important;
+}
