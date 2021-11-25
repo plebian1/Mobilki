@@ -14,7 +14,7 @@ class Api_all_users(Resource):
         return jsonify(results)
 
 
-@name_space_users.route('', methods=['GET', 'DELETE'])
+@name_space_users.route('/single', methods=['GET', 'DELETE'])
 class Api_single_user(Resource):
     def get(self):
         """pojedynczy użytkownik"""
