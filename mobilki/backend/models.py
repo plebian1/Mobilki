@@ -43,13 +43,13 @@ class DiagnosticsTypes(db.Model):
     __tablename__ = 'DiagnosticsTypes'
     DiagnosticsTypesId = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     Name = db.Column(db.String(), nullable=False, unique=True)
-    Price = db.Column(db.String(), nullable=False, unique=False)
+
 
 
 class DiagnosticsTypesShema(ma.Schema):
     class Meta:
         # Fields to expose
-        fields = ("DiagnosticsTypesId", "Name", "Price")
+        fields = ("DiagnosticsTypesId", "Name")
 
 
 diagnosticsType_schema = DiagnosticsTypesShema()

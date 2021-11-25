@@ -147,8 +147,8 @@ class Api_single_user_apointments(Resource):
 class Api_single_user_apointments(Resource):
     def get(self,date):
 
-
-        apointmentquery = Appointments.query.filter_by(Date=date)
+        user_id = httprequest.headers["Userid"]
+        apointmentquery = Appointments.query.filter_by(Date=date, UserId= user_id)
         apointmenttab = []
         for i in apointmentquery:
             apointmenttab.append(i)
@@ -193,9 +193,7 @@ class Api_all_DiagnosticsResults(Resource):
 class Api_single_user_details(Resource):
     def get(self):
 
-        json_data = httprequest.json
-        user_id = json_data.headers
-        print(user_id)
+        user_id = httprequest.headers["Userid"]
 
         apointmentquery = Appointments.query.filter_by(UserId=user_id)
         for i in apointmentquery:
@@ -241,9 +239,7 @@ class Api_all_AppointmentDetails(Resource):
 class Api_single_user_apointments_details(Resource):
     def get(self):
 
-        json_data = httprequest.json
-        user_id = json_data.headers
-        print(user_id)
+        user_id = httprequest.headers["Userid"]
 
 
         apointmentquery = Appointments.query.filter_by(UserId=user_id)
@@ -443,10 +439,10 @@ class Api_add_results_to_apointment(Resource):
 # dodawanie rodzajow badan
 
 
-@name_space_diagnostics.route('/<name>/<price>', methods=['POST', 'DELETE'])
+@name_space_diagnostics.route('/<name>', methods=['POST', 'DELETE'])
 class Api_add_diagniostic_type(Resource):
-    def post(self, name, price, ):
-        diagnostic_type = DiagnosticsTypes(Name=name, Price=price)
+    def post(self, name ):
+        diagnostic_type = DiagnosticsTypes(Name=name)
         try:
             db.session.add(diagnostic_type)
             db.session.commit()
