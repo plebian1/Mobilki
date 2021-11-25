@@ -147,8 +147,7 @@ class Api_single_user_apointments(Resource):
 class Api_single_user_apointments(Resource):
     def get(self,date):
 
-        user_id = httprequest.headers["Userid"]
-        apointmentquery = Appointments.query.filter_by(Date=date, UserId= user_id)
+        apointmentquery = Appointments.query.filter_by(Date=date)
         apointmenttab = []
         for i in apointmentquery:
             apointmenttab.append(i)
