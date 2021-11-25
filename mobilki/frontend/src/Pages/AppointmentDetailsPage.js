@@ -6,7 +6,7 @@ const AppointmentDetailsPage = ({appointmentId}) =>  {
 
     const [exams, setExams] = useState([]);
     const { post } = useFetch(
-        'api/appointments/details/' + appointmentId,
+        'api/appointments/details',
         {
             headers: {
                 userId: sessionStorage.getItem('userId'),
@@ -27,7 +27,6 @@ const AppointmentDetailsPage = ({appointmentId}) =>  {
 
         if (response.ok) {
             setExams(data);
-            console.log(data)
         }
     };
 
