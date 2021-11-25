@@ -153,8 +153,9 @@ class Api_single_user_apointments(Resource):
 class Api_single_user_apointments(Resource):
     def get(self,date):
 
+        user_id = httprequest.headers["Userid"]
 
-        apointmentquery = Appointments.query.filter_by(Date=date)
+        apointmentquery = Appointments.query.filter_by(Date=date, UserId = user_id)
         apointmenttab = []
         for i in apointmentquery:
             apointmenttab.append(i)
@@ -201,9 +202,7 @@ class Api_all_DiagnosticsResults(Resource):
 class Api_single_user_details(Resource):
     def get(self):
 
-        json_data = httprequest.json
-        user_id = json_data.headers
-        print(user_id)
+        user_id = httprequest.headers["Userid"]
 
         apointmentquery = Appointments.query.filter_by(UserId=user_id)
         for i in apointmentquery:
@@ -249,9 +248,7 @@ class Api_all_AppointmentDetails(Resource):
 class Api_single_user_apointments_details(Resource):
     def get(self):
 
-        json_data = httprequest.json
-        user_id = json_data.headers
-        print(user_id)
+        user_id = httprequest.headers["Userid"]
 
 
         apointmentquery = Appointments.query.filter_by(UserId=user_id)
