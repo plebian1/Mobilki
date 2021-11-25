@@ -449,7 +449,9 @@ class Api_add_results_to_apointment(Resource):
 
 @name_space_diagnostics.route('/<name>', methods=['POST', 'DELETE'])
 class Api_add_diagniostic_type(Resource):
+
     def post(self, name ):
+
         diagnostic_type = DiagnosticsTypes(Name=name)
         try:
             db.session.add(diagnostic_type)
