@@ -450,10 +450,10 @@ class Api_add_results_to_apointment(Resource):
 # dodawanie rodzajow badan
 
 
-@name_space_diagnostics.route('/<name>/<price>', methods=['POST', 'DELETE'])
+@name_space_diagnostics.route('/<name>', methods=['POST', 'DELETE'])
 class Api_add_diagniostic_type(Resource):
     def post(self, name, price, ):
-        diagnostic_type = DiagnosticsTypes(Name=name, Price=price)
+        diagnostic_type = DiagnosticsTypes(Name=name)
         try:
             db.session.add(diagnostic_type)
             db.session.commit()
