@@ -10,7 +10,6 @@ const AppointmentPage = () =>  {
   
   const history = useHistory();
 
-  // const excludeTimes = [new Date(0,0,0).setHours(8,30,0), new Date(0,0,0).setHours(9,30,0)];
   var now  = new Date();
   now.setDate(now.getDate() + 1)
   now.setHours(8);
@@ -18,10 +17,10 @@ const AppointmentPage = () =>  {
   now.setSeconds(0);
   
   const [selectedDate, setSelectedDate] = useState(now);
-  const [selectedTime, setselectedTime] = useState(now);
+  const [selectedTime, setSelectedTime] = useState(now);
   const [appointmentId, setAppointmentId] = useState();
   const [excludeTimes, setExcludeTimes] = useState([]);
-
+  const [allAppointments, setAllAppointments] = useState([]);
   const {post, response } = useFetch(
       'api/appointments/new_appointment',
       {
@@ -32,9 +31,26 @@ const AppointmentPage = () =>  {
       }
   );
 
+  const {get, response } = useFetch(
+    'api/appointments',
+    {
+        headers: {
+            userId: sessionStorage.getItem('userId'),
+        },
+        cachePolicy: 'no-cache',
+    }
+);
+
   const handleDateChange = (date) => {
+    setExcludeTimes([]);
     setSelectedDate(date);
-    setselectedTime(date);
+    setSelectedTime(date);
+    
+    for(var i=0; i<allAppointments.length; i++){
+      if(i.Date == selectedDate.toLocaleDateString()){
+        excludeTimes.push(new Date(0,0,0).setHours(i.Time.getHours(),i.Time.getMinutes(),0));
+      }
+    }
   };
 
 
@@ -57,7 +73,21 @@ const AppointmentPage = () =>  {
         history.pushState()
       }});
   }
+
+  const getAppointments = async () => {
+
+    const data = await get("");
+
+    if (response.ok) {
+      setAllAppointments(data);
+    }
+  }
   
+  useEffect(() => {
+    getAppointments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); 
+
   return (
     <div>
       <Navbar></Navbar>
