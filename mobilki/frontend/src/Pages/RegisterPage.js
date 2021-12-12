@@ -28,7 +28,7 @@ const RegisterPage = () =>  {
           }).then((res) => {
             if (response.ok) {
 
-                sessionStorage.setItem("userId", res.UserId);
+                sessionStorage.setItem("userId", res);
                 sessionStorage.setItem("isAuthenticated", true);
                 history.push("/");
             }});
