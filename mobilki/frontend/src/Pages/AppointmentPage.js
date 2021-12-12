@@ -1,5 +1,5 @@
 import pl from "date-fns/locale/pl";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useHistory } from "react-router";
@@ -19,9 +19,8 @@ const AppointmentPage = () =>  {
   const [selectedDate, setSelectedDate] = useState(now);
   const [selectedTime, setSelectedTime] = useState(now);
   const [appointmentId, setAppointmentId] = useState();
-  const [excludeTimes, setExcludeTimes] = useState([]);
   const [allAppointments, setAllAppointments] = useState([]);
-  const {post, response } = useFetch(
+  const {post } = useFetch(
       'api/appointments/new_appointment',
       {
           headers: {
@@ -42,16 +41,31 @@ const AppointmentPage = () =>  {
 );
 
   const handleDateChange = (date) => {
-    setExcludeTimes([]);
     setSelectedDate(date);
     setSelectedTime(date);
-    
+  };
+
+/*const setExcludeDate = (date) =>
+{
+    var excludeTimes =[];
     for(var i=0; i<allAppointments.length; i++){
-      if(i.Date == selectedDate.toLocaleDateString()){
-        excludeTimes.push(new Date(0,0,0).setHours(i.Time.getHours(),i.Time.getMinutes(),0));
+
+      if(allAppointments[i].Date == selectedDate.toLocaleDateString()){
+        console.log(excludeTimes)
+
+        var data_cos =  new Date(0,0,0);
+        var hour = allAppointments[i].Time[0];
+        var minute = allAppointments[i].Time[2] *10;
+        data_cos.setHours(hour,minute,0);
+
+        excludeTimes.push(data_cos);
       }
     }
-  };
+    return excludeTimes;
+
+}*/
+
+
 
 
   const filterDays = (date) => {
@@ -68,19 +82,17 @@ const AppointmentPage = () =>  {
       date: selectedDate.toLocaleDateString(),
       time: selectedTime.getHours() + ":" + selectedTime.getMinutes()
     }).then((res) => {
-      if (response.ok) {
+
         setAppointmentId(res.result.id);
         history.pushState()
-      }});
+      });
   }
 
   const getAppointments = async () => {
 
     const data = await get("");
+    setAllAppointments(data);
 
-    if (response.ok) {
-      setAllAppointments(data);
-    }
   }
   
   useEffect(() => {
@@ -102,7 +114,7 @@ const AppointmentPage = () =>  {
             minDate={now}
             minTime={new Date().setHours(8,0,0)}
             maxTime={new Date().setHours(12,0,0)}
-            excludeTimes={excludeTimes}
+           // excludeTimes={setExcludeDate}
             timeIntervals={10}
             timeFormat="hh:mm"
             timeCaption="Godzina"

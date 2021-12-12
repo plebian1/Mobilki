@@ -92,6 +92,21 @@ diagnosticsResult_schema = DiagnosticsResultsSchema()
 diagnosticsResults_schema = DiagnosticsResultsSchema(many=True)
 
 
+
+class DiagnosticsResultsNameSchema(ma.Schema):
+    class Meta:
+        # Fields to expose
+        fields = ("Name", "Result")
+
+
+diagnosticsResultName_schema = DiagnosticsResultsNameSchema()
+diagnosticsResultsName_schema = DiagnosticsResultsNameSchema(many=True)
+
+
+
+
+
+
 class AppointmentDetails(db.Model):
     __tablename__ = 'AppointmentDetails'
     AppointmentDetailsId = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)

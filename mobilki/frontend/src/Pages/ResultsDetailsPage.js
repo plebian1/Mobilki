@@ -16,9 +16,11 @@ const ResultsDetailsPage = ({id}) =>  {
     );
 
     function Results() {
+    console.log(appointmentResults);
         const results = [];
 
         for(var i=0; i<appointmentResults.length; i++) {
+        console.log("HERE2");
             results.push(<ResultDetails examName={appointmentResults[i].Name} examResult={appointmentResults[i].Result}></ResultDetails>);
         }
         return results; 
@@ -27,9 +29,8 @@ const ResultsDetailsPage = ({id}) =>  {
     const getAppointmentResults = async () =>  {
       const data = await get(""); 
 
-      if (response.ok) {
         setAppointmentResults(data);
-      }
+
     };
 
     useEffect(() => {
@@ -47,7 +48,6 @@ const ResultsDetailsPage = ({id}) =>  {
               <Results></Results>
               </tbody>
             </table>
-            <button type="submit" class="btn btn-primary" onClick={save}>Eksportuj wyniki do pliku pdf</button>
           </div>
         </div>
     );

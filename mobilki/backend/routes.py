@@ -195,11 +195,24 @@ class Api_single_appointment_results(Resource):
         """ Wynik badań w danej wizycie """
 
         diagnosticsquery = DiagnosticsResults.query.filter_by(AppointmentsId=appointment_id)
-
+        detailsnametab = []
+        detailstab = []
         for i in diagnosticsquery:
-            details = i
+            detailstab.append(i)
+
+        for detail in detailstab:
+            typesquery = DiagnosticsTypes.query.filter_by(DiagnosticsTypesId=detail.DiagnosticsTypesId)
+            for i in typesquery:
+                name = i.Name
+
+            detailsnametab.append({'Name':name,'Result':detail.Result})
+
+        print(detailsnametab)
+
+
         try:
-            results = diagnosticsResults_schema.dump(details)
+            results = diagnosticsResultsName_schema.dump(detailsnametab)
+            print(results)
             return jsonify(results)
         except UnboundLocalError:
             abort(404, description="Resource not found")
@@ -229,10 +242,11 @@ class Api_single_user_apointments_details(Resource):
 
         detailsquery = AppointmentDetails.query.filter_by(AppointmentsId=apointment.AppointmentsId)
 
+        detailstab = []
         for i in detailsquery:
-            details = i
+            detailstab.append(i)
         try:
-            results = appointmentDetails_schema.dump(details)
+            results = appointmentDetails_schema.dump(detailstab)
             return jsonify(results)
         except UnboundLocalError:
             abort(404, description="Resource not found")
@@ -243,11 +257,13 @@ class Api_single_apointment_details(Resource):
     def get(self, appointment_id):
         """ Szczegóły wizyty """
         detailsquery = AppointmentDetails.query.filter_by(AppointmentsId=appointment_id)
-
+        detailstab = []
         for i in detailsquery:
-            details = i
+            detailstab.append(i)
+
+        print(detailstab)
         try:
-            results = appointmentDetail_schema.dump(details)
+            results = appointmentDetails_schema.dump(detailstab)
             return jsonify(results)
         except UnboundLocalError:
             abort(404, description="Resource not found")
