@@ -67,7 +67,7 @@ class Appointments(db.Model):
 class AppointmentsSchema(ma.Schema):
     class Meta:
         # Fields to expose
-        fields = ("AppointmentsId", "Date", "Time" "UserId")
+        fields = ("AppointmentsId", "Date", "Time" ,"UserId")
 
 
 appointment_schema = AppointmentsSchema()

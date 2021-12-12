@@ -31,7 +31,7 @@ class Api_single_user(Resource):
             abort(404, description="Resource not found")
 
 
-"""@name_space_logins.route('')
+@name_space_logins.route('')
 class Api_all_LoginData(Resource):
     def get(self):
 
@@ -57,7 +57,7 @@ class Api_single_login(Resource):
         except UnboundLocalError:
             abort(404, description="Resource not found")
 
-"""
+
 #Diagnostics
 
 @name_space_diagnostics.route('')
@@ -305,7 +305,11 @@ class Api_register_into_system(Resource):
             db.session.close()
             print("this user is already in DB")
             return "this user is already in DB", 400
-        return user
+
+        print("HERE")
+        print(user.Name)
+        print(user.UserId)
+        return str(user.UserId)
 
 
 
@@ -351,7 +355,7 @@ class Api_log_into_system2(Resource):
         except UnboundLocalError:
             return "incorect pesel or password", 400
 
-        return user1
+        #return user1
 
 
 
