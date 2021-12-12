@@ -1,4 +1,3 @@
-import jsPDF from "jspdf";
 import React, { useEffect, useState } from 'react';
 import useFetch from "use-http";
 import Navbar from "./Navbar";
@@ -24,19 +23,6 @@ const ResultsDetailsPage = ({id}) =>  {
         }
         return results; 
     }
-
-    function save() {
-        var doc = new jsPDF('p', 'pt', 'a4');
-        doc.html(document.querySelector('#results'), {
-          callback: function (doc) {
-            doc.save('wyniki.pdf');
-          },
-          margin: [30, 30, 30, 30],
-          x: 32,
-          y: 32,
-        });
-      }
-
       
     const getAppointmentResults = async () =>  {
       const data = await get(""); 
